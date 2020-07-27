@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MovementCharacter : MonoBehaviour
 {
-    public int Velocidad = 3;
+    public Vector2 Velocidad = new Vector2(10, 1000);
+    public int JumpForce = 0; 
+   
 
 
     // Start is called before the first frame update
@@ -20,21 +22,30 @@ public class MovementCharacter : MonoBehaviour
     }
 
     void PlayerMovement()
-    {   
+    {
+        GetComponent<Rigidbody2D>().rotation = 0;
+        GetComponent<Rigidbody2D>().angularVelocity = 0;
+        Debug.Log(GetComponent<Rigidbody2D>().velocity);
         //Movimiento Lateral
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.localPosition += Vector3.left * Velocidad * Time.deltaTime;
+            transform.localPosition += Vector3.left * Velocidad.x * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.localPosition += Vector3.right * Velocidad * Time.deltaTime;
+            transform.localPosition += Vector3.right * Velocidad.x * Time.deltaTime;
         }
-
-        //Salto
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKey(KeyCode.Space) && GetComponent<Rigidbody2D>().velocity.y == 0)
         {
-            
+            Debug.Log("Jump");
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            transform.localPosition += Vector3.up * Velocidad.y * Time.deltaTime;
+
+
         }
+        
+    
+        
+        
     }
 }
